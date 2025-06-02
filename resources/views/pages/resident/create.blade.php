@@ -1,0 +1,138 @@
+@extends('layouts.app')
+
+@section('content')
+<!-- page heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Tambah Jemaat</h1> 
+</div>   
+
+{{--@if($errors->any())
+    @dd($errors->all())
+@endif--}}
+
+<div class="row">
+    <div class="col">
+        <form action="/resident" method="post">
+            @csrf
+            @method('POST')
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group mb-3">   
+                        <label for="nij">NIJ</label>
+                        <input type="number" name="nij" id="nij" class="form-control @error('nij') is-invalid @enderror" value="{{ old('nij')}}">
+                        @error('nij')
+                            <span class="invalid-feedback">
+                                {{$message}}
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="form-group mb-3">   
+                        <label for="nama">Nama Lengkap</label>
+                        <input type="text" inputmode="text" name="nama" id="nama" class="form-control @error('nama') is-invalid @enderror"value="{{ old('nama')}}">
+                        @error('nama')
+                            <span class="invalid-feedback">
+                                {{$message}}
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="form-group mb-3">   
+                        <label for="gender">Jenis Kelamin</label>
+                        <select name="gender" id="gender" class="form-control @error('gender') is-invalid @enderror">
+                            @foreach ([
+                                (object)[
+                                    "label" => "Laki-laki",
+                                    "value" => "male",                               
+                                    ],
+                                (object) [
+                                    "label" => "Perempuan",
+                                    "value" => "female",
+                                    ],
+                                ] as $item)
+                            <option value="{{ $item->value }}"@selected(old(('gender')) == $item->value)>{{ $item->label }}</option>    
+                            @endforeach
+                        </select>
+                        @error('gender')
+                            <span class="invalid-feedback">
+                                {{$message}}
+                            </span>
+                        @enderror                    
+                    </div>
+                    <div class="form-group mb-3">   
+                        <label for="birth_date">Tanggal Lahir</label>
+                        <input type="date" name="birth_date" id="birth_date" class="form-control @error('birth_date') is-invalid @enderror"value="{{ old('birth_date')}}">
+                        @error('birth_date')
+                            <span class="invalid-feedback">
+                                {{$message}}
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="form-group mb-3">   
+                        <label for="birth_place">Tempat Lahir</label>
+                        <input type="text" name="birth_place" id="birth_place" class="form-control @error('birth_place') is-invalid @enderror"value="{{ old('birth_place')}}">
+                        @error('birth_place')
+                            <span class="invalid-feedback">
+                                {{$message}}
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="form-group mb-3">   
+                            <label for="status_perkawinan">Status Pernikahan</label>
+                                <select name="status_perkawinan" id="status_perkawinan" class="form-control @error('status_perkawinan') is-invalid @enderror">
+                                    @foreach ([
+                                        (object) ['label' => 'Belum Menikah', 'value' => 'single'],
+                                        (object) ['label' => 'Menikah', 'value' => 'married'],
+                                        (object) ['label' => 'Cerai', 'value' => 'divorced'],
+                                        (object) ['label' => 'Duda/Janda', 'value' => 'widowed'],
+                                    ] as $item)
+                                        <option value="{{ $item->value }}" @selected(old('status_perkawinan') == $item->value)>{{ $item->label }}</option> 
+                                    @endforeach
+                                </select>
+                                @error('status_perkawinan')
+                                    <span class="invalid-feedback">
+                                        {{$message}}
+                                    </span>
+                                @enderror
+                    </div>                    
+                    <div class="form-group mb-3">   
+                        <label for="address">Alamat</label>
+                        <textarea name="address" id="address" cols="30" rows="10" class="form-control @error('address') is-invalid @enderror">{{ old('address')}}</textarea>
+                        @error('address')
+                            <span class="invalid-feedback">
+                                {{$message}}
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="form-group mb-3">   
+                        <label for="phone">Telepone</label>
+                        <input type="number" inputmode="numeric" name="phone" id="phone" class="form-control @error('phone') is-invalid @enderror"value="{{ old('phone')}}">
+                        @error('phone')
+                            <span class="invalid-feedback">
+                                {{$message}}
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="form-group mb-3">   
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror "value="{{ old('email')}}">
+                        @error('email')
+                            <span class="invalid-feedback">
+                                {{$message}}
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-end" style="gap: 10px;">
+                        <a href="/resident" class="btn btn-outline-secondary">
+                            kembali
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            simpan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
