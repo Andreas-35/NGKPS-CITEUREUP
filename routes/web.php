@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ResidentsController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KegiatanGerejaController;
+use App\Http\Controllers\TransaksiController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,3 +20,7 @@ Route::get('/resident/{id}',[ResidentsController::class, 'edit']);
 Route::post('/resident',[ResidentsController::class, 'store']);
 Route::put('/resident/{id}',[ResidentsController::class, 'update']);
 Route::delete('/resident/{id}',[ResidentsController::class, 'delete']);
+
+Route::resource('kegiatan', KegiatanGerejaController::class);
+
+Route::resource('transaksi', TransaksiController::class);

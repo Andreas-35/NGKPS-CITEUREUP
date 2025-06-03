@@ -33,6 +33,18 @@
                     <span>Anggota</span></a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="/kegiatan">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Kegiatan</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/transaksi">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Bendahara</span></a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
