@@ -12,8 +12,10 @@ class TransaksiController extends Controller
 public function index()
 {
     $transaksis = Transaksi::all();
+    $totalPemasukan = Transaksi::where('jenis', 'pemasukan')->sum('jumlah');
+    $totalPengeluaran = Transaksi::where('jenis', 'pengeluaran')->sum('jumlah');
 
-    return view('pages.transaksi.index', compact('transaksis'));
+    return view('pages.transaksi.index', compact('transaksis', 'totalPemasukan', 'totalPengeluaran'));
 }
 
 public function create()
@@ -23,23 +25,24 @@ public function create()
 
 public function store(Request $request)
 {
-    dd(Auth::id());
-    $request->validate([
+    $validated = $request->validate([
         'jenis' => 'required|string',
         'keterangan' => 'required|string',
         'jumlah' => 'required|numeric',
         'tanggal' => 'required|date',
     ]);
 
-    Transaksi::create([
-        'jenis' => $request->jenis,
-        'keterangan' => $request->keterangan,
-        'jumlah' => $request->jumlah,
-        'tanggal' => $request->tanggal,
-        'user_id' => Auth::id(), // <-- Tambahkan ini
-    ]);
+    $validated['user_id'] = Auth::id(); // tambahkan user_id dari session aktif
 
-    return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil disimpan.');
+    Transaksi::create($validated);
+
+    return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil ditambahkan');
+}
+
+public function edit($id)
+{
+    $transaksi = Transaksi::findOrFail($id);
+    return view('pages.transaksi.edit', compact('transaksi'));
 }
 
 public function update(Request $request, $id)
@@ -47,7 +50,7 @@ public function update(Request $request, $id)
     $request->validate([
         'jenis' => 'required|in:pemasukan,pengeluaran',
         'keterangan' => 'required|string',
-        'jumlah' => 'required|numeric|min:0',
+        'jumlah' => 'required|numeric',
         'tanggal' => 'required|date',
     ]);
 
@@ -57,9 +60,20 @@ public function update(Request $request, $id)
     return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diperbarui.');
 }
 
-public function __construct()
+public function laporan()
 {
-    $this->middleware('auth');
+    $transaksis = Transaksi::where('user_id', Auth::id())->orderBy('tanggal', 'desc')->get();
+
+    $totalPemasukan = $transaksis->where('jenis', 'pemasukan')->sum('jumlah');
+    $totalPengeluaran = $transaksis->where('jenis', 'pengeluaran')->sum('jumlah');
+
+    return view('pages.transaksi.laporan', compact('transaksis', 'totalPemasukan', 'totalPengeluaran'));
 }
+
+
+// public function __construct()
+// {
+//     $this->middleware('auth');
+// }
 
 }
